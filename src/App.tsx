@@ -1,70 +1,525 @@
-import { useMemo, useState } from 'react';
-import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleHelp, Eye, Heart, Menu, Plus, Search, SlidersHorizontal, Sparkles, X } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import {
+  ArrowDownRight,
+  ArrowRight,
+  ArrowUpRight,
+  Check,
+  ChevronDown,
+  Download,
+  Eye,
+  Film,
+  Heart,
+  Instagram,
+  Linkedin,
+  Mail,
+  Menu,
+  Play,
+  Search,
+  SlidersHorizontal,
+  Sparkles,
+  Video,
+  X,
+  Youtube
+} from 'lucide-react';
+import { profileInfo, projectCategories, projects, Project } from './data/portfolioData';
+import { VideoModal } from './components/VideoModal';
 
-type Project = {id:number; title:string; creator:string; category:string; image:string; tag:string; description:string; year:string};
-const projects:Project[] = [
- {id:1,title:'Cuong Nguyen',creator:'Cuong Nguyen',category:'Branding',tag:'IDENTITY / 3D',year:'2025',image:'https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=900&q=85',description:'A bold visual identity experiment exploring expressive forms, tactile color and a playful graphic language.'},
- {id:2,title:'Polestar 1:1',creator:'DVS XX24',category:'3D Motion',tag:'AUTOMOTIVE / CGI',year:'2025',image:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=85',description:'Automotive CGI concept with cinematic lighting, reflective surfaces and carefully paced product storytelling.'},
- {id:3,title:'Almas 3',creator:'Studio Form',category:'3D Motion',tag:'PRODUCT / CGI',year:'2024',image:'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1000&q=85',description:'A minimal product visualization study focused on materials, precision and atmospheric light.'},
- {id:4,title:'Samar Mosiner',creator:'Samar Mosiner',category:'Web Design',tag:'DIGITAL / INTERFACE',year:'2025',image:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=85',description:'A digital product concept bringing a clear information hierarchy and lively interactive moments together.'},
- {id:5,title:'Follai',creator:'Follai Studio',category:'Branding',tag:'BRANDING / OBJECT',year:'2024',image:'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=900&q=85',description:'A contemporary brand system with sculptural forms, a reduced palette and a memorable visual signature.'},
- {id:6,title:'David Gart',creator:'David Gart',category:'Motion Design',tag:'MOTION / EXPERIMENT',year:'2025',image:'https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?auto=format&fit=crop&w=900&q=85',description:'A motion-led digital artwork using gradient light, movement and geometric composition.'},
- {id:7,title:'Blue Hour',creator:'Frame Lab',category:'Video Editing',tag:'FILM / COLOR',year:'2025',image:'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=900&q=85',description:'A short film edit built around atmosphere, natural transitions and a warm cinematic grade.'},
- {id:8,title:'Objects in Space',creator:'Motion Dept.',category:'Motion Design',tag:'3D / MOTION',year:'2024',image:'https://images.unsplash.com/photo-1633533452148-a9659d7ba6f7?auto=format&fit=crop&w=900&q=85',description:'An abstract 3D motion study that pairs clean forms with vivid color and an intentional rhythm.'}
-];
-const categories = ['All projects','Branding','Web Design','Video Editing','Motion Design','3D Motion'];
+function App() {
+  const [category, setCategory] = useState<string>('All Projects');
+  const [query, setQuery] = useState('');
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [showreelOpen, setShowreelOpen] = useState(false);
+  const [saved, setSaved] = useState<number[]>([]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mode, setMode] = useState<'light' | 'dark'>('light');
+  const [contactOpen, setContactOpen] = useState(false);
+  const [inquiryCategory, setInquiryCategory] = useState<string>('AI Reels');
+  const [sent, setSent] = useState(false);
 
-function App(){
- const [category,setCategory]=useState('All projects');
- const [query,setQuery]=useState('');
- const [selected,setSelected]=useState<Project|null>(null);
- const [saved,setSaved]=useState<number[]>([]);
- const [menu,setMenu]=useState(false);
- const [mode,setMode]=useState<'light'|'dark'>('light');
- const [contactOpen,setContactOpen]=useState(false);
- const [sent,setSent]=useState(false);
- const shown=useMemo(()=>projects.filter(p=>(category==='All projects'||p.category===category)&&(`${p.title} ${p.category} ${p.creator}`.toLowerCase().includes(query.toLowerCase()))),[category,query]);
- const toggleSave=(id:number)=>setSaved(old=>old.includes(id)?old.filter(x=>x!==id):[...old,id]);
- return <div className={mode==='dark'?'app darkmode':'app'}>
-  <header className="topbar">
-   <a className="wordmark" href="#home"><span className="mark">◈</span><b>PORTFOLIO</b></a>
-   <button className="mobile-menu" onClick={()=>setMenu(!menu)} aria-label="Open navigation">{menu?<X/>:<Menu/>}</button>
-   <nav className={menu?'navlinks open':'navlinks'}><a href="#home" onClick={()=>setMenu(false)}>HOME</a><a href="#features" onClick={()=>setMenu(false)}>BẢN TƯƠNG / ABOUT</a><a href="#projects" onClick={()=>setMenu(false)}>PROJECTS</a><a href="#contact" onClick={()=>{setMenu(false);setContactOpen(true)}}>CONTACT</a></nav>
-   <div className="navright"><button className="textbtn" onClick={()=>setContactOpen(true)}>LOG IN</button><button className="blackpill" onClick={()=>setContactOpen(true)}>LET'S TALK <ArrowUpRight size={12}/></button><button className="themebtn" onClick={()=>setMode(mode==='light'?'dark':'light')} title="Toggle theme">◐</button></div>
-  </header>
-  <main>
-   <section className="hero" id="home">
-    <div className="hero-meta"><span>✳ &nbsp; CLARITY IN EVERY FRAME</span><span>+ &nbsp; MULTIMEDIA DESIGNER</span></div>
-    <div className="hero-title"><p>WELCOME TO MY</p><h1>PORT<span>F</span><i>OLIO</i><b className="star">✦</b></h1><div className="redblock"/></div>
-    <div className="hero-labels"><span>CUONG NGUYEN</span><span>MULTIMEDIA DESIGNER</span></div>
-    <div className="collage">
-      <div className="collage-card bluecard"><img src="https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=700&q=85" alt="Abstract blue digital artwork"/><span>01 / DIGITAL</span></div>
-      <div className="collage-card redcard"><div className="eye-symbol">◉</div><span>CUONG NGUYEN</span></div>
-      <div className="collage-card personcard"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=85" alt="Creative portrait"/><b>DVS XX24</b></div>
-      <div className="collage-card watchcard"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=85" alt="Minimal product watch"/><span>01:27</span></div>
-      <div className="collage-card green-card"><span className="green-mark">↗</span><b>DESIGN<br/>IN MOTION</b></div>
-      <span className="cross cross1">＋</span><span className="cross cross2">×</span><span className="cross cross3">✳</span>
+  // Filtered projects
+  const filteredProjects = useMemo(() => {
+    return projects.filter((p) => {
+      const matchCategory = category === 'All Projects' || p.category === category;
+      const searchContent = `${p.title} ${p.category} ${p.tag} ${p.client} ${p.tools.join(' ')}`.toLowerCase();
+      const matchQuery = searchContent.includes(query.toLowerCase());
+      return matchCategory && matchQuery;
+    });
+  }, [category, query]);
+
+  const toggleSave = (id: number) => {
+    setSaved((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  };
+
+  const handleDiscussProject = (p: Project) => {
+    setInquiryCategory(p.category);
+    setContactOpen(true);
+  };
+
+  const featuredProject = projects.find((p) => p.featured) || projects[0];
+
+  return (
+    <div className={mode === 'dark' ? 'app darkmode' : 'app'}>
+      {/* Topbar Header */}
+      <header className="topbar">
+        <a className="wordmark" href="#home">
+          <span className="mark">◈</span>
+          <b>DIVYANSHU</b>
+        </a>
+
+        <button
+          className="mobile-menu"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle navigation menu"
+        >
+          {menuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+
+        <nav className={menuOpen ? 'navlinks open' : 'navlinks'}>
+          <a href="#home" onClick={() => setMenuOpen(false)}>HOME</a>
+          <a href="#showreel" onClick={() => setMenuOpen(false)}>SHOWREEL</a>
+          <a href="#projects" onClick={() => setMenuOpen(false)}>WORK / PROJECTS</a>
+          <a href="#about" onClick={() => setMenuOpen(false)}>ABOUT & SKILLS</a>
+          <a href="#contact" onClick={() => { setMenuOpen(false); setContactOpen(true); }}>CONTACT</a>
+        </nav>
+
+        <div className="navright">
+          <button
+            className="themebtn"
+            onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
+            title="Toggle Light/Dark Theme"
+          >
+            {mode === 'light' ? '🌙' : '☀️'}
+          </button>
+          <a
+            className="resume-btn"
+            href="#contact"
+            onClick={() => setContactOpen(true)}
+            title="Contact Divyanshu"
+          >
+            HIRE ME <ArrowUpRight size={12} />
+          </a>
+          <button className="blackpill" onClick={() => setContactOpen(true)}>
+            LET'S TALK <ArrowUpRight size={12} />
+          </button>
+        </div>
+      </header>
+
+      <main>
+        {/* Editorial Hero Section */}
+        <section className="hero" id="home">
+          <div className="hero-meta">
+            <span>✳ &nbsp; HIGH-IMPACT VISUAL STORYTELLER</span>
+            <span>+ &nbsp; VIDEO EDITOR & CREATIVE DIRECTOR</span>
+          </div>
+
+          <div className="hero-title">
+            <p>PORTFOLIO & SHOWCASE</p>
+            <h1>
+              DIVYAN<span>S</span><i>HU</i>
+              <b className="star">✦</b>
+            </h1>
+            <div className="redblock" />
+          </div>
+
+          <div className="hero-labels">
+            <span>AI REELS · COMMERCIALS · POLITICS</span>
+            <span>WEDDINGS · FASHION · YOUTUBE</span>
+          </div>
+
+          {/* Interactive Floating 3D Video Cards Collage */}
+          <div className="collage">
+            <div
+              className="collage-card bluecard"
+              onClick={() => setSelectedProject(projects[0])}
+              role="button"
+              tabIndex={0}
+            >
+              <img src={projects[0].image} alt="AI Reels preview" />
+              <span>01 / AI REELS</span>
+            </div>
+
+            <div
+              className="collage-card redcard"
+              onClick={() => setShowreelOpen(true)}
+              role="button"
+              tabIndex={0}
+            >
+              <div className="eye-symbol">▶</div>
+              <span>WATCH REEL</span>
+            </div>
+
+            <div
+              className="collage-card personcard"
+              onClick={() => setSelectedProject(projects[1])}
+              role="button"
+              tabIndex={0}
+            >
+              <img src="/assets/divyanshu_portrait.jpg" alt="Divyanshu - Creative Editor" />
+              <b>CLIENT REEL</b>
+            </div>
+
+            <div
+              className="collage-card watchcard"
+              onClick={() => setSelectedProject(projects[3])}
+              role="button"
+              tabIndex={0}
+            >
+              <img src={projects[3].image} alt="Fashion Reels preview" />
+              <span>FASHION 9:16</span>
+            </div>
+
+            <div
+              className="collage-card green-card"
+              onClick={() => setSelectedProject(projects[2])}
+              role="button"
+              tabIndex={0}
+            >
+              <span className="green-mark">🗳️</span>
+              <b>ELECTION<br />CAMPAIGNS</b>
+            </div>
+
+            <span className="cross cross1">＋</span>
+            <span className="cross cross2">×</span>
+            <span className="cross cross3">✳</span>
+          </div>
+
+          <div className="hero-bottom">
+            <span>SCROLL TO EXPLORE WORK <ArrowDownRight size={13} /></span>
+            <span>AVAILABLE FOR FREELANCE & FULL-TIME PROJECTS</span>
+            <span>01 — 07 CATEGORIES</span>
+          </div>
+        </section>
+
+        {/* Ticker / Marquee Banner */}
+        <section className="ticker">
+          <div>
+            AI REELS <i>✳</i> VIDEO EDITING <i>✳</i> ELECTION CAMPAIGNS <i>✳</i> COLOR GRADING <i>✳</i> FASHION REELS <i>✳</i> YOUTUBE PRODUCTION <i>✳</i> 3D MOTION <i>✳</i>
+          </div>
+        </section>
+
+        {/* Featured Video Showreel Highlight Section */}
+        <section className="showreel-section" id="showreel">
+          <div className="showreel-card">
+            <div className="showreel-content">
+              <span className="eyebrow"><Sparkles size={12} /> FEATURED SHOWREEL</span>
+              <h2>Cinematic Motion & Video Editing Reel</h2>
+              <p>Experience seamless cuts, precision color grading, dynamic sound design, and generative AI video storytelling.</p>
+              <div className="showreel-actions">
+                <button className="blackpill large" onClick={() => setSelectedProject(featuredProject)}>
+                  <Play size={16} fill="currentColor" /> PLAY SHOWREEL PREVIEW
+                </button>
+              </div>
+            </div>
+            <div className="showreel-media" onClick={() => setSelectedProject(featuredProject)}>
+              <img src={featuredProject.image} alt="Showreel Thumbnail" />
+              <div className="play-overlay">
+                <Play size={36} fill="white" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Projects Section with Category Filters & Search */}
+        <section className="project-section" id="projects">
+          <div className="section-head">
+            <div>
+              <span className="eyebrow">01 / SELECTED VIDEO WORK</span>
+              <h2>Video Projects <i>| across 7 categories</i></h2>
+            </div>
+            <div className="headnote">
+              Real projects spanning AI Reels, Commercials,<br />Political Campaigns, Weddings, and YouTube content.
+            </div>
+          </div>
+
+          <div className="toolbar">
+            <div className="category-tabs">
+              {projectCategories.map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setCategory(c)}
+                  className={category === c ? 'tab active' : 'tab'}
+                >
+                  {c}
+                  {c === 'AI Reels' && <span className="tab-badge">NEW</span>}
+                </button>
+              ))}
+            </div>
+
+            <label className="searchbox">
+              <Search size={14} />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search projects or tools..."
+              />
+              <SlidersHorizontal size={13} />
+            </label>
+          </div>
+
+          <div className="project-grid">
+            {filteredProjects.map((p) => (
+              <article className={`project-card ${p.aspectRatio === '9:16' ? 'is-vertical' : ''}`} key={p.id}>
+                <button className="thumb" onClick={() => setSelectedProject(p)}>
+                  <img src={p.image} alt={p.title} loading="lazy" />
+                  <span className="thumb-tag">{p.tag}</span>
+                  <span className="ratio-tag">{p.aspectRatio}</span>
+                  <span className="view-project">
+                    WATCH VIDEO <ArrowUpRight size={13} />
+                  </span>
+                  <span className="grid-index">{String(p.id).padStart(2, '0')}</span>
+                </button>
+
+                <div className="card-foot">
+                  <button className="project-name" onClick={() => setSelectedProject(p)}>
+                    <b>{p.title}</b>
+                    <small>{p.client} · {p.year}</small>
+                  </button>
+                  <button
+                    className={saved.includes(p.id) ? 'heart saved' : 'heart'}
+                    onClick={() => toggleSave(p.id)}
+                    aria-label="Save project to bookmarks"
+                  >
+                    <Heart size={15} fill={saved.includes(p.id) ? 'currentColor' : 'none'} />
+                  </button>
+                </div>
+              </article>
+            ))}
+
+            {filteredProjects.length === 0 && (
+              <div className="empty">
+                No video projects match your search query. Try another category or keyword.
+              </div>
+            )}
+          </div>
+
+          <div className="project-end">
+            <span>
+              SHOWING {String(filteredProjects.length).padStart(2, '0')} / {String(projects.length).padStart(2, '0')} PROJECTS
+              {saved.length > 0 && ` (${saved.length} BOOKMARKED)`}
+            </span>
+            <button
+              onClick={() => {
+                setCategory('All Projects');
+                setQuery('');
+              }}
+            >
+              RESET FILTERS <ArrowRight size={13} />
+            </button>
+          </div>
+        </section>
+
+        {/* About & Skills Section */}
+        <section className="about" id="about">
+          <div className="about-top">
+            <span className="eyebrow">02 / ABOUT DIVYANSHU</span>
+            <span>VIDEO EDITOR · CREATIVE DIRECTOR · VISUAL THINKER</span>
+          </div>
+
+          <div className="about-grid">
+            <div>
+              <h2>
+                I make footage<br />
+                look <i>impossible</i><br />
+                to ignore.
+              </h2>
+              <div className="scribble">✳</div>
+            </div>
+
+            <div className="about-copy">
+              <p className="lead">{profileInfo.bio}</p>
+              <p>
+                Whether it's an aggressive political campaign video that demands voter attention, a high-fashion 9:16 Instagram Reel, a cinematic wedding highlight, or a viral AI-generated concept reel, I engineer every frame for pacing, retention, and aesthetic mastery.
+              </p>
+              <div className="about-actions">
+                <button className="outlinebtn" onClick={() => setContactOpen(true)}>
+                  LET'S COLLABORATE <ArrowUpRight size={14} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Bar */}
+          <div className="stats-bar">
+            {profileInfo.stats.map((st) => (
+              <div className="stat-item" key={st.label}>
+                <b className="stat-value">{st.value}</b>
+                <span className="stat-label">{st.label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Skills Matrix */}
+          <div className="skills-matrix">
+            <span className="eyebrow">TECHNICAL & CREATIVE CAPABILITIES</span>
+            <div className="skills-grid">
+              {profileInfo.skills.map((group) => (
+                <div key={group.category} className="skill-group">
+                  <h3>{group.category}</h3>
+                  <div className="skill-tags">
+                    {group.items.map((item) => (
+                      <span key={item} className="skill-chip">{item}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section className="contact" id="contact">
+          <div className="contact-deco">
+            CREATE<br />
+            <i>IMPACT</i><br />
+            NOW.
+          </div>
+
+          <span className="eyebrow">03 / READY TO START A PROJECT?</span>
+          <h2>
+            Let's create<br />
+            <i>something extraordinary.</i>
+          </h2>
+
+          <p>
+            Have a brand campaign, an AI Reel idea, an election film, or YouTube content that needs top-tier post-production? Reach out and let's bring it to life.
+          </p>
+
+          <div className="contact-actions-row">
+            <button className="blackpill large" onClick={() => setContactOpen(true)}>
+              START A CONVERSATION <ArrowUpRight size={15} />
+            </button>
+            <a
+              href={`mailto:${profileInfo.email}`}
+              className="email-direct-btn"
+            >
+              <Mail size={14} /> {profileInfo.email}
+            </a>
+          </div>
+
+          <div className="social-links-bar">
+            <a href={profileInfo.socials.linkedin} target="_blank" rel="noopener noreferrer">
+              <Linkedin size={15} /> LinkedIn
+            </a>
+            <a href={profileInfo.socials.youtube} target="_blank" rel="noopener noreferrer">
+              <Youtube size={15} /> YouTube
+            </a>
+            <a href={profileInfo.socials.instagram} target="_blank" rel="noopener noreferrer">
+              <Instagram size={15} /> Instagram
+            </a>
+          </div>
+
+          <div className="contact-bottom">
+            <span>GOOD IDEAS START WITH A HELLO.</span>
+            <a href={`mailto:${profileInfo.email}`}>{profileInfo.email.toUpperCase()}</a>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="footer">
+        <a className="wordmark" href="#home">
+          <span className="mark">◈</span>
+          <b>DIVYANSHU</b>
+        </a>
+        <span>CREATIVE VIDEO EDITOR & POST-PRODUCTION / 2026</span>
+        <div>
+          <a href="#projects">PROJECTS</a>
+          <a href="#about">ABOUT</a>
+          <a href="#contact" onClick={() => setContactOpen(true)}>CONTACT ↗</a>
+        </div>
+        <small>© 2026 DIVYANSHU · CRAFTED WITH PRECISION & INTENTION</small>
+      </footer>
+
+      {/* Video Modal Popup */}
+      <VideoModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+        onDiscuss={handleDiscussProject}
+      />
+
+      {/* Contact & Inquiry Modal */}
+      {contactOpen && (
+        <div className="overlay" onClick={() => setContactOpen(false)}>
+          <div className="contact-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+            <button className="close" onClick={() => setContactOpen(false)}>
+              <X size={18} />
+            </button>
+
+            {sent ? (
+              <>
+                <span className="eyebrow">MESSAGE PREPARED</span>
+                <h2>Thank you for reaching out!</h2>
+                <p>Opening your email client to send your project inquiry directly to Divyanshu.</p>
+                <button
+                  className="blackpill"
+                  onClick={() => {
+                    setContactOpen(false);
+                    setSent(false);
+                  }}
+                >
+                  CLOSE <Check size={13} />
+                </button>
+              </>
+            ) : (
+              <>
+                <span className="eyebrow">WORK WITH DIVYANSHU</span>
+                <h2>
+                  Tell me about<br />
+                  <i>your project.</i>
+                </h2>
+
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setSent(true);
+                    window.location.href = `mailto:${profileInfo.email}?subject=Project%20Inquiry%20[${inquiryCategory}]`;
+                  }}
+                >
+                  <label>
+                    YOUR NAME
+                    <input required placeholder="Full Name" />
+                  </label>
+
+                  <label>
+                    YOUR EMAIL
+                    <input required type="email" placeholder="you@example.com" />
+                  </label>
+
+                  <label>
+                    PROJECT CATEGORY
+                    <select
+                      value={inquiryCategory}
+                      onChange={(e) => setInquiryCategory(e.target.value)}
+                      className="modal-select"
+                    >
+                      {projectCategories.filter((c) => c !== 'All Projects').map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label>
+                    PROJECT NOTES & REQUIREMENTS
+                    <textarea
+                      required
+                      placeholder="Briefly describe the video style, timeline, and goals..."
+                      rows={3}
+                    />
+                  </label>
+
+                  <button className="blackpill" type="submit">
+                    SEND INQUIRY <ArrowUpRight size={13} />
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
-    <div className="hero-bottom"><span>SCROLL TO DISCOVER <ArrowDownRight size={13}/></span><span>INDEPENDENT CREATIVE / AVAILABLE FOR PROJECTS</span><span>01 — 04</span></div>
-   </section>
-   <section className="ticker"><div>VIDEO EDITING <i>✳</i> ART DIRECTION <i>✳</i> 3D MOTION <i>✳</i> VISUAL DESIGN <i>✳</i> VIDEO EDITING <i>✳</i> ART DIRECTION <i>✳</i></div></section>
-   <section className="project-section" id="projects">
-    <div className="section-head"><div><span className="eyebrow">01 / SELECTED WORK</span><h2>Projects <i>| times to dudien</i></h2></div><div className="headnote">A collection of experiments,<br/>collaborations and visual stories.</div></div>
-    <div className="toolbar"><div className="category-tabs">{categories.map(c=><button key={c} onClick={()=>setCategory(c)} className={category===c?'tab active':'tab'}>{c}{c==='3D Motion'&&<span>↗</span>}</button>)}</div><label className="searchbox"><Search size={14}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search projects"/><SlidersHorizontal size={13}/></label></div>
-    <div className="project-grid">{shown.map((p,i)=><article className="project-card" key={p.id}>
-      <button className="thumb" onClick={()=>setSelected(p)}><img src={p.image} alt={p.title} loading="lazy"/><span className="thumb-tag">{p.tag}</span><span className="view-project">VIEW PROJECT <ArrowUpRight size={13}/></span><span className="grid-index">{String(p.id).padStart(2,'0')}</span></button>
-      <div className="card-foot"><button className="project-name" onClick={()=>setSelected(p)}><b>{p.title}</b><small>{p.creator} · {p.year}</small></button><button className={saved.includes(p.id)?'heart saved':'heart'} onClick={()=>toggleSave(p.id)} aria-label="Save project"><Heart size={15} fill={saved.includes(p.id)?'currentColor':'none'}/></button></div>
-     </article>)}
-     {shown.length===0&&<div className="empty">No projects match that search. Try another keyword.</div>}
-    </div>
-    <div className="project-end"><span>SHOWING {String(shown.length).padStart(2,'0')} / {String(projects.length).padStart(2,'0')} PROJECTS</span><button onClick={()=>{setCategory('All projects');setQuery('')}}>RESET FILTERS <ArrowRight size={13}/></button></div>
-   </section>
-   <section className="about" id="features"><div className="about-top"><span className="eyebrow">02 / A LITTLE ABOUT ME</span><span>DESIGNER · EDITOR · VISUAL THINKER</span></div><div className="about-grid"><div><h2>I make ideas<br/>look <i>impossible</i><br/>to ignore.</h2><div className="scribble">✳</div></div><div className="about-copy"><p className="lead">A multidisciplinary creative focused on turning ideas into clear, memorable visual experiences.</p><p>I work across video editing, digital design, 3D motion and visual storytelling. My process mixes curiosity with precision: find the core idea, give it a visual language, then make every detail work harder.</p><button className="outlinebtn" onClick={()=>setContactOpen(true)}>LET'S COLLABORATE <ArrowUpRight size={14}/></button></div></div><div className="skills"><span>VIDEO EDITING</span><span>COLOR GRADING</span><span>3D MOTION</span><span>ART DIRECTION</span><span>VISUAL IDENTITY</span><span>STORYTELLING</span></div></section>
-   <section className="contact" id="contact"><div className="contact-deco">LET'S<br/><i>MAKE</i><br/>SOMETHING.</div><span className="eyebrow">03 / HAVE A GOOD PROJECT?</span><h2>Let's make<br/><i>something matter.</i></h2><p>Have an idea, a film, or a visual problem that needs solving? Send a note and let's make it happen.</p><button className="blackpill large" onClick={()=>setContactOpen(true)}>START A CONVERSATION <ArrowUpRight size={15}/></button><div className="contact-bottom"><span>GOOD IDEAS START WITH A HELLO.</span><a href="mailto:hello@portfolio.studio">HELLO@PORTFOLIO.STUDIO</a></div></section>
-  </main>
-  <footer className="footer"><a className="wordmark" href="#home"><span className="mark">◈</span><b>PORTFOLIO</b></a><span>INDEPENDENT CREATIVE STUDIO / 2026</span><div><a href="#projects">PROJECTS</a><a href="#features">ABOUT</a><a href="#contact">CONTACT ↗</a></div><small>© 2026 · DESIGNED WITH INTENTION</small></footer>
-  {selected&&<div className="overlay" onClick={()=>setSelected(null)}><div className="detail" onClick={e=>e.stopPropagation()} role="dialog" aria-modal="true"><button className="close" onClick={()=>setSelected(null)}><X size={18}/></button><aside><button className="backlink" onClick={()=>setSelected(null)}><ArrowLeft size={13}/> ALL PROJECTS</button><div className="detail-mini"><span>PROJECT / {String(selected.id).padStart(2,'0')}</span><span>{selected.year}</span></div><h2>{selected.title}</h2><p>{selected.description}</p><div className="detail-tags"><span>{selected.category}</span><span>{selected.tag}</span></div><button className="blackpill" onClick={()=>{setSelected(null);setContactOpen(true)}}>DISCUSS A PROJECT <ArrowUpRight size={13}/></button></aside><div className="detail-image"><img src={selected.image} alt={selected.title}/><span>{selected.tag}</span></div></div></div>}
-  {contactOpen&&<div className="overlay" onClick={()=>setContactOpen(false)}><div className="contact-modal" onClick={e=>e.stopPropagation()} role="dialog" aria-modal="true"><button className="close" onClick={()=>setContactOpen(false)}><X size={18}/></button>{sent?<><span className="eyebrow">MESSAGE READY</span><h2>Thanks for reaching out.</h2><p>Your email app should open with your project inquiry.</p><button className="blackpill" onClick={()=>{setContactOpen(false);setSent(false)}}>CLOSE <Check size={13}/></button></>:<><span className="eyebrow">LET'S WORK TOGETHER</span><h2>Tell me what<br/><i>you're making.</i></h2><form onSubmit={e=>{e.preventDefault();setSent(true);window.location.href='mailto:hello@portfolio.studio?subject=Project%20inquiry'}}><label>YOUR NAME<input required placeholder="Name"/></label><label>YOUR EMAIL<input required type="email" placeholder="you@example.com"/></label><label>PROJECT NOTES<textarea required placeholder="A few words about the idea..." rows={3}/></label><button className="blackpill" type="submit">SEND INQUIRY <ArrowUpRight size={13}/></button></form></>}</div></div>}
- </div>
+  );
 }
+
 export default App;

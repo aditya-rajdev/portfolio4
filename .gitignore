@@ -22,6 +22,9 @@ dist/
 dist-ssr/
 build/
 
+# Large raw video assets (hosted externally / via Google Drive)
+public/drive_assets/
+
 # Environment files
 .env
 .env.local

@@ -1,0 +1,114 @@
+[
+  {
+    "id": 1,
+    "title": "Funda-App-1",
+    "filename": "Funda-app-1.mp4",
+    "category": "AI REELS",
+    "thumb": "/thumbnails/thumb_Funda-app-1.jpg",
+    "video_url": "/drive_assets/AI REELS/Funda-app-1.mp4"
+  },
+  {
+    "id": 2,
+    "title": "Metaearning6924 (4)",
+    "filename": "METAEARNING6924 (4).mp4",
+    "category": "AI REELS",
+    "thumb": "/thumbnails/thumb_METAEARNING6924_4.jpg",
+    "video_url": "/drive_assets/AI REELS/METAEARNING6924 (4).mp4"
+  },
+  {
+    "id": 3,
+    "title": "Sample Project",
+    "filename": "SAMPLE PROJECT.mp4",
+    "category": "AI REELS",
+    "thumb": "/thumbnails/thumb_SAMPLE_PROJECT.jpg",
+    "video_url": "/drive_assets/AI REELS/SAMPLE PROJECT.mp4"
+  },
+  {
+    "id": 4,
+    "title": "Aagam",
+    "filename": "Aagam.mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_Aagam.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/Aagam.mp4"
+  },
+  {
+    "id": 5,
+    "title": "Aman Birthday",
+    "filename": "AMAN BIRTHDAY.mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_AMAN_BIRTHDAY.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/AMAN BIRTHDAY.mp4"
+  },
+  {
+    "id": 6,
+    "title": "Funda  Ai 1",
+    "filename": "Copy of FUNDA_ AI_1.mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_Copy_of_FUNDA__AI_1.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/Copy of FUNDA_ AI_1.mp4"
+  },
+  {
+    "id": 7,
+    "title": "Sample Project",
+    "filename": "Copy of SAMPLE PROJECT.mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_Copy_of_SAMPLE_PROJECT.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/Copy of SAMPLE PROJECT.mp4"
+  },
+  {
+    "id": 8,
+    "title": "Crafting Coffee02-",
+    "filename": "Crafting coffee02-.mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_Crafting_coffee02-.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/Crafting coffee02-.mp4"
+  },
+  {
+    "id": 9,
+    "title": "Jawed Birthday",
+    "filename": "JAWED BIRTHDAY.mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_JAWED_BIRTHDAY.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/JAWED BIRTHDAY.mp4"
+  },
+  {
+    "id": 10,
+    "title": "Katha",
+    "filename": "katha .mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_katha_.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/katha .mp4"
+  },
+  {
+    "id": 11,
+    "title": "Logo",
+    "filename": "logo.mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_logo.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/logo.mp4"
+  },
+  {
+    "id": 12,
+    "title": "Matcha",
+    "filename": "Matcha.mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_Matcha.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/Matcha.mp4"
+  },
+  {
+    "id": 13,
+    "title": "Pasta",
+    "filename": "Pasta.mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_Pasta.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/Pasta.mp4"
+  },
+  {
+    "id": 14,
+    "title": "Programme Highlights Final",
+    "filename": "programme highlights final.mp4",
+    "category": "CLIENT REEL",
+    "thumb": "/thumbnails/thumb_programme_highlights_final.jpg",
+    "video_url": "/drive_assets/CLIENT REEL/programme highlights final.mp4"
+  }
+]
